@@ -1,0 +1,689 @@
+/* ══════════════════════════════════════════════════════════════════════
+   SpaceX Flight Control Center — Hoja de estilos principal
+   Metodología: Atomic Design
+   Niveles: Átomos · Moléculas · Organismos · Plantillas · Página
+   ══════════════════════════════════════════════════════════════════════ */
+
+
+/* ── RESET GLOBAL ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ── VARIABLES DE DISEÑO ──────────────────────────────────────────────
+   Paleta de colores, tipografías y tamaños del sistema táctico.
+   ─────────────────────────────────────────────────────────────────── */
+:root {
+  /* Fondos y superficies */
+  --bg:        #060b14;
+  --surface:   #0a1628;
+  --surface-2: #0d1e35;
+
+  /* Bordes */
+  --border:    #1a2d4a;
+  --border-2:  #243d5e;
+
+  /* Colores semánticos */
+  --accent:    #00ff9f;
+  --info:      #00aaff;
+  --warn:      #ffaa00;
+  --danger:    #ff4444;
+
+  /* Texto */
+  --text:      #94a3b8;
+  --text-hi:   #e2e8f0;
+
+  /* Tipografías */
+  --font-main: 'Rajdhani', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   PÁGINA — Contenedor raíz y configuración base del documento
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Contenedor principal de la aplicación */
+.page-mission-control {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-main);
+  font-size: 14px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Clase utilitaria para tipografía monoespaciada */
+.atom-mono {
+  font-family: var(--font-mono);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   ÁTOMOS — Elementos básicos e indivisibles de la interfaz.
+   No dependen de otros componentes para existir.
+   ════════════════════════════════════════════════════════════════════ */
+
+
+/* ── BOTÓN BASE ── */
+.atom-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 16px;
+  font-family: var(--font-main);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  user-select: none;
+}
+.atom-btn:hover {
+  border-color: var(--border-2);
+  color: var(--text-hi);
+}
+
+/* Botón primario: acción principal del formulario */
+.atom-btn--primary {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(0, 255, 159, 0.06);
+  width: 100%;
+}
+.atom-btn--primary:hover {
+  background: rgba(0, 255, 159, 0.16);
+}
+
+/* Botón secundario: acción alternativa o de salida de modo */
+.atom-btn--secondary {
+  border-color: var(--border-2);
+  color: var(--text);
+  width: 100%;
+  margin-top: 6px;
+}
+.atom-btn--secondary:hover {
+  border-color: var(--info);
+  color: var(--info);
+  background: rgba(0, 170, 255, 0.06);
+}
+
+/* Botón de peligro: acciones destructivas o de cancelación */
+.atom-btn--danger {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: rgba(255, 68, 68, 0.06);
+}
+.atom-btn--danger:hover {
+  background: rgba(255, 68, 68, 0.16);
+}
+
+/* Botón de filtro: navegación por estado de los vuelos */
+.atom-btn--filter {
+  padding: 3px 10px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  width: auto;
+  margin-top: 0;
+}
+.atom-btn--filter:hover {
+  border-color: var(--info);
+  color: var(--info);
+  background: rgba(0, 170, 255, 0.06);
+}
+
+/* Modificador de estado activo para botones de filtro */
+.atom-btn--filter-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(0, 255, 159, 0.07);
+}
+
+/* Tamaño reducido para botones dentro de las tarjetas */
+.atom-btn--sm {
+  padding: 4px 10px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  width: auto;
+  margin-top: 0;
+}
+
+
+/* ── CAMPO DE TEXTO ── */
+.atom-input {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-hi);
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 10px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.atom-input::placeholder {
+  color: var(--border-2);
+  font-size: 12px;
+}
+.atom-input:focus {
+  border-color: var(--info);
+}
+
+/* Campo de fecha: ajuste del color del ícono nativo */
+.atom-input[type="datetime-local"] {
+  color-scheme: dark;
+}
+
+
+/* ── SELECTOR DESPLEGABLE ── */
+.atom-select {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-hi);
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 10px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  transition: border-color 0.2s ease;
+}
+.atom-select:focus {
+  border-color: var(--info);
+}
+.atom-select option {
+  background: var(--surface);
+  color: var(--text-hi);
+}
+
+
+/* ── ETIQUETA DE CAMPO ── */
+.atom-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+
+
+/* ── INDICADOR DE ESTADO (badge) ──
+   Pequeña pastilla que muestra el estado actual de un lanzamiento.
+   Los modificadores cambian el color según el valor semántico. */
+.atom-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 2px 7px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.atom-badge--pendiente {
+  color: var(--warn);
+  border-color: var(--warn);
+  background: rgba(255, 170, 0, 0.10);
+}
+.atom-badge--lanzado {
+  color: var(--info);
+  border-color: var(--info);
+  background: rgba(0, 170, 255, 0.10);
+}
+.atom-badge--cancelado {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: rgba(255, 68, 68, 0.10);
+}
+
+
+/* ── CHIP DE ESTADO (topbar) ──
+   Indicador compuesto por punto parpadeante y texto de estado. */
+.atom-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+}
+.atom-status-chip--online {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.atom-status-chip--info {
+  border-color: var(--info);
+  color: var(--info);
+}
+
+
+/* ── PUNTO PARPADEANTE ──
+   Indicador visual de actividad en tiempo real. */
+.atom-blink-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: parpadeo 1.5s infinite;
+  flex-shrink: 0;
+}
+@keyframes parpadeo {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.15; }
+}
+
+
+/* ── RELOJ DIGITAL ── */
+.atom-clock {
+  font-size: 14px;
+  color: var(--info);
+  letter-spacing: 2px;
+}
+
+
+/* ── VALORES DE ESTADÍSTICA ──
+   Colores semánticos aplicados a los números del panel de estadísticas. */
+.atom-val--warn    { color: var(--warn); }
+.atom-val--info    { color: var(--info); }
+.atom-val--danger  { color: var(--danger); }
+.atom-val--neutral { color: var(--text-hi); }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   MOLÉCULAS — Combinaciones de átomos con una función específica.
+   Son unidades independientes con significado propio en la UI.
+   ════════════════════════════════════════════════════════════════════ */
+
+
+/* ── MARCA DE NAVEGACIÓN ── */
+.molecule-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.molecule-nav-brand__logo {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+}
+.molecule-nav-brand__text {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.molecule-nav-brand__name {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-hi);
+  letter-spacing: 4px;
+}
+.molecule-nav-brand__pipe {
+  color: var(--border-2);
+  margin: 0 10px;
+  font-size: 18px;
+}
+.molecule-nav-brand__sub {
+  font-size: 11px;
+  color: var(--text);
+  letter-spacing: 2.5px;
+  font-weight: 500;
+}
+
+
+/* ── CAMPO DE FORMULARIO ──
+   Agrupa la etiqueta y el control de entrada de datos. */
+.molecule-form-field {
+  margin-bottom: 12px;
+}
+
+
+/* ── ACCIONES DEL FORMULARIO ──
+   Contenedor de los botones de envío y cancelación. */
+.molecule-form-actions {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ── ÍTEM DE ESTADÍSTICA ──
+   Fila con etiqueta a la izquierda y valor numérico a la derecha. */
+.molecule-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.molecule-stat-item__label {
+  font-size: 10px;
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+.molecule-stat-item__value {
+  font-family: var(--font-mono);
+  font-size: 20px;
+}
+
+
+/* ── GRUPO DE FILTROS ──
+   Fila horizontal de botones de filtrado por estado. */
+.molecule-filter-group {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+
+/* ── ENCABEZADO DE TARJETA ──
+   Fila superior de cada tarjeta: identificador + badge de estado. */
+.molecule-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.molecule-card-header__id {
+  font-size: 10px;
+  color: var(--text);
+  letter-spacing: 1px;
+}
+
+
+/* ── CUERPO DE TARJETA ──
+   Sección central con los datos del lanzamiento.
+
+   Jerarquía visual esperada:
+     __name       → nombre de la serie (texto destacado)
+     __type       → tipo de cohete (color según data-tipo en el padre)
+     __objective  → objetivo de la misión (texto secundario)
+     __date       → fecha/hora formateada (tipografía monoespaciada)
+*/
+.molecule-card-body {
+  margin-bottom: 12px;
+}
+.molecule-card-body__name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-hi);
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+}
+.molecule-card-body__type {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.molecule-card-body__objective {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.45;
+  margin-bottom: 8px;
+}
+.molecule-card-body__date {
+  font-size: 11px;
+  color: var(--text);
+  letter-spacing: 1px;
+}
+
+
+/* ── PIE DE TARJETA ──
+   Fila inferior con los botones de acción de la tarjeta. */
+.molecule-card-footer {
+  display: flex;
+  gap: 6px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   ORGANISMOS — Componentes complejos formados por moléculas y/o átomos.
+   Representan secciones funcionales reconocibles de la interfaz.
+   ════════════════════════════════════════════════════════════════════ */
+
+
+/* ── TOPBAR ──
+   Barra de navegación principal: identidad, reloj y contadores globales. */
+.organism-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  height: 56px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.organism-topbar__controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+
+/* ── FORMULARIO DE LANZAMIENTO ── */
+.organism-launch-form {
+  padding: 16px 16px 8px;
+}
+
+
+/* ── PANEL DE ESTADÍSTICAS ──
+   Contenedor de los ítems de conteo agrupados por estado. */
+.organism-stats-panel {
+  /* Los ítems de estadística se apilan verticalmente */
+}
+
+
+/* ── BARRA DE FILTROS ──
+   Controles para navegar y filtrar las tarjetas por estado. */
+.organism-filter-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.organism-filter-nav__label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+.organism-filter-nav__count {
+  font-size: 11px;
+  color: var(--text);
+  letter-spacing: 1px;
+  margin-left: auto;
+}
+
+
+/* ── GRID DE TARJETAS ──
+   Contenedor que distribuye las tarjetas en una cuadrícula adaptable. */
+.organism-card-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  align-content: start;
+  /* Fondo con cuadrícula táctica sutil */
+  background:
+    linear-gradient(rgba(0, 255, 159, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 159, 0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+
+/* ── TARJETA DE LANZAMIENTO ──
+   Representación visual de un vuelo en el grid.
+
+   Modificadores de estado (borde lateral izquierdo):
+     --pendiente  → ámbar
+     --lanzado    → azul
+     --cancelado  → rojo, opacidad reducida
+
+   Clase de interacción hover (añadida/eliminada por JavaScript):
+     .is-hovered  → elevación + brillo de borde
+
+   Coloreado del tipo de cohete vía atributo data-tipo:
+     [data-tipo="falcon"]        → azul
+     [data-tipo="falcon-heavy"]  → ámbar
+     [data-tipo="starship"]      → verde
+*/
+.organism-launch-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  border-left: 3px solid transparent;
+  padding: 14px;
+  /* Transición para animaciones de entrada y salida del hover */
+  transition:
+    transform     0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow    0.28s ease,
+    border-color  0.2s  ease,
+    background    0.2s  ease;
+}
+
+/* Estado: pendiente de lanzamiento */
+.organism-launch-card--pendiente {
+  border-left-color: var(--warn);
+}
+
+/* Estado: lanzamiento ejecutado */
+.organism-launch-card--lanzado {
+  border-left-color: var(--info);
+  background: rgba(0, 170, 255, 0.02);
+}
+
+/* Estado: lanzamiento cancelado */
+.organism-launch-card--cancelado {
+  border-left-color: var(--danger);
+  opacity: 0.55;
+}
+
+/* Clase de hover activa — JavaScript la agrega en mouseover y elimina en mouseout */
+.organism-launch-card.is-hovered {
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: 0 14px 32px rgba(0, 170, 255, 0.20);
+  border-color: var(--info);
+  background: rgba(0, 170, 255, 0.05);
+  opacity: 1;
+}
+
+/* Color del texto del tipo de cohete según el atributo data-tipo de la tarjeta */
+.organism-launch-card[data-tipo="falcon"]       .molecule-card-body__type { color: var(--info);   }
+.organism-launch-card[data-tipo="falcon-heavy"] .molecule-card-body__type { color: var(--warn);   }
+.organism-launch-card[data-tipo="starship"]     .molecule-card-body__type { color: var(--accent); }
+
+
+/* ── ESTADO VACÍO ──
+   Mensaje centrado cuando no hay tarjetas en el grid. */
+.organism-empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 80px 20px;
+  text-align: center;
+}
+.organism-empty-state__icon {
+  opacity: 0.35;
+}
+.organism-empty-state__title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--border-2);
+  letter-spacing: 2.5px;
+}
+.organism-empty-state__subtitle {
+  font-size: 11px;
+  color: var(--border);
+  letter-spacing: 1px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   PLANTILLAS — Esquemas de distribución espacial de los organismos.
+   Definen cómo se organiza el contenido en la pantalla.
+   ════════════════════════════════════════════════════════════════════ */
+
+
+/* ── ESPACIO DE TRABAJO ──
+   Layout principal: columna de formulario + columna de tarjetas. */
+.template-workspace {
+  display: grid;
+  grid-template-columns: 290px 1fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+
+/* ── PANEL GENÉRICO ──
+   Columna de contenido con flexbox vertical. */
+.template-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Panel izquierdo: formulario y estadísticas */
+.template-panel--left {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+}
+
+/* Panel principal: filtros y grid de tarjetas */
+.template-panel--main {
+  background: var(--bg);
+}
+
+
+/* ── TÍTULO DE SECCIÓN ──
+   Encabezado de bloque dentro de un panel. */
+.template-panel__title {
+  padding: 10px 14px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* Variante con margen superior para secciones secundarias */
+.template-panel__title--spaced {
+  margin-top: 4px;
+}
+
+
+/* ── BARRA DE DESPLAZAMIENTO PERSONALIZADA ── */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-2); }

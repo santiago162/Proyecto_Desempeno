@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpaceX · Flight Control Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles-vuelos.css">
+</head>
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║   SPACEX FLIGHT CONTROL CENTER                                  ║
+  ║   Proyecto de Desempeño · SENA Formación Complementaria 3406211 ║
+  ╚══════════════════════════════════════════════════════════════════╝
+
+  Este archivo define la estructura y los elementos de la interfaz.
+  El comportamiento de la aplicación debe ser implementado por el
+  aprendiz en el archivo: js/control-vuelos.js
+
+  IMPORTANTE: No modifiques este archivo.
+-->
+
+<body class="page-mission-control">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       TOPBAR: Organism — Barra de navegación principal de la aplicación.
+       Contiene la identidad del sistema, el reloj y los contadores globales.
+       ═══════════════════════════════════════════════════════════════ -->
+  <header class="organism-topbar">
+
+    <!-- Marca del sistema: logotipo SVG + nombre y subtítulo -->
+    <div class="molecule-nav-brand">
+      <svg viewBox="0 0 24 24" class="molecule-nav-brand__logo" aria-hidden="true">
+        <line x1="12" y1="3"  x2="12" y2="15" stroke="#00ff9f" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8"  y1="11" x2="12" y2="3"  stroke="#00ff9f" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="16" y1="11" x2="12" y2="3"  stroke="#00ff9f" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="7"  y1="19" x2="17" y2="19" stroke="#00ff9f" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="9"  y1="15" x2="7"  y2="19" stroke="#00ff9f" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="15" y1="15" x2="17" y2="19" stroke="#00ff9f" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="12" cy="21" r="1.5" stroke="#00ff9f" stroke-width="1.5" fill="none"/>
+      </svg>
+      <div class="molecule-nav-brand__text">
+        <span class="molecule-nav-brand__name">SPACEX</span>
+        <span class="molecule-nav-brand__pipe">|</span>
+        <span class="molecule-nav-brand__sub">FLIGHT CONTROL CENTER</span>
+      </div>
+    </div>
+
+    <!-- Controles del sistema: indicador de estado, reloj UTC y contador de vuelos -->
+    <div class="organism-topbar__controls">
+      <div class="atom-status-chip atom-status-chip--online">
+        <span class="atom-blink-dot"></span>
+        SISTEMAS NOMINALES
+      </div>
+      <!-- El reloj se actualiza en tiempo real mediante JavaScript -->
+      <span class="atom-mono atom-clock" id="reloj-principal">--:--:--Z</span>
+      <div class="atom-status-chip atom-status-chip--info">
+        <span class="atom-blink-dot"></span>
+        VUELOS ACTIVOS:&nbsp;<span id="contador-lanzamientos">0</span>
+      </div>
+    </div>
+
+  </header>
+  <!-- FIN TOPBAR -->
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       WORKSPACE: Template — Estructura de trabajo en dos columnas.
+       Columna izquierda: formulario + estadísticas.
+       Columna principal: filtros + grid de tarjetas.
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="template-workspace">
+
+
+    <!-- ─────────────────────────────────────────────────────────────
+         PANEL IZQUIERDO: Template — Columna de entrada de datos.
+         ───────────────────────────────────────────────────────────── -->
+    <aside class="template-panel template-panel--left">
+
+      <!-- Título de la sección del formulario -->
+      <div class="template-panel__title">// REGISTRAR LANZAMIENTO</div>
+
+      <!-- ·····················································
+           FORMULARIO: Organism — Captura y envío de los datos
+           de un lanzamiento nuevo o en edición.
+           ····················································· -->
+      <form class="organism-launch-form" id="form-lanzamiento" novalidate>
+
+        <!-- CAMPO: Molecule — Nombre de la serie del cohete -->
+        <div class="molecule-form-field">
+          <label class="atom-label" for="input-nombre-serie">NOMBRE DE SERIE</label>
+          <input
+            class="atom-input"
+            type="text"
+            id="input-nombre-serie"
+            placeholder="Ej: STARLINK-GROUP-9-1"
+            autocomplete="off"
+            maxlength="60"
+          >
+        </div>
+
+        <!-- CAMPO: Molecule — Selección del tipo de vehículo de lanzamiento -->
+        <div class="molecule-form-field">
+          <label class="atom-label" for="select-tipo-cohete">TIPO DE COHETE</label>
+          <select class="atom-select" id="select-tipo-cohete">
+            <option value="">── SELECCIONAR ──</option>
+            <option value="falcon">FALCON 9</option>
+            <option value="falcon-heavy">FALCON HEAVY</option>
+            <option value="starship">STARSHIP</option>
+          </select>
+        </div>
+
+        <!-- CAMPO: Molecule — Fecha y hora programada para el lanzamiento -->
+        <div class="molecule-form-field">
+          <label class="atom-label" for="input-fecha-lanzamiento">FECHA Y HORA DE LANZAMIENTO</label>
+          <input
+            class="atom-input"
+            type="datetime-local"
+            id="input-fecha-lanzamiento"
+          >
+        </div>
+
+        <!-- CAMPO: Molecule — Descripción del objetivo de la misión -->
+        <div class="molecule-form-field">
+          <label class="atom-label" for="input-objetivo-mision">OBJETIVO DE MISIÓN</label>
+          <input
+            class="atom-input"
+            type="text"
+            id="input-objetivo-mision"
+            placeholder="Ej: Despliegue constelación Starlink"
+            autocomplete="off"
+            maxlength="80"
+          >
+        </div>
+
+        <!--
+          Campo oculto que almacena el ID del lanzamiento que se está
+          editando. Cuando está vacío la acción es un registro nuevo.
+        -->
+        <input type="hidden" id="input-id-edicion" value="">
+
+        <!-- ACCIONES: Molecule — Botones del formulario -->
+        <div class="molecule-form-actions">
+          <button class="atom-btn atom-btn--primary" type="submit" id="btn-registrar">
+            &#9654;&nbsp;REGISTRAR LANZAMIENTO
+          </button>
+          <!--
+            Este botón se muestra únicamente cuando el formulario está
+            en modo edición. Su visibilidad la controla JavaScript.
+          -->
+          <button class="atom-btn atom-btn--secondary" type="button" id="btn-cancelar-edicion">
+            &#10005;&nbsp;CANCELAR EDICIÓN
+          </button>
+        </div>
+
+      </form>
+      <!-- FIN FORMULARIO -->
+
+
+      <!-- ·····················································
+           ESTADÍSTICAS: Organism — Contadores de lanzamientos
+           agrupados por estado. Se actualizan via JavaScript.
+           ····················································· -->
+      <div class="template-panel__title template-panel__title--spaced">// ESTADÍSTICAS</div>
+
+      <div class="organism-stats-panel">
+
+        <div class="molecule-stat-item">
+          <span class="molecule-stat-item__label">PENDIENTES</span>
+          <span class="molecule-stat-item__value atom-val--warn" id="stat-pendientes">0</span>
+        </div>
+
+        <div class="molecule-stat-item">
+          <span class="molecule-stat-item__label">LANZADOS</span>
+          <span class="molecule-stat-item__value atom-val--info" id="stat-lanzados">0</span>
+        </div>
+
+        <div class="molecule-stat-item">
+          <span class="molecule-stat-item__label">CANCELADOS</span>
+          <span class="molecule-stat-item__value atom-val--danger" id="stat-cancelados">0</span>
+        </div>
+
+        <div class="molecule-stat-item">
+          <span class="molecule-stat-item__label">TOTAL</span>
+          <span class="molecule-stat-item__value atom-val--neutral" id="stat-total">0</span>
+        </div>
+
+      </div>
+      <!-- FIN ESTADÍSTICAS -->
+
+    </aside>
+    <!-- FIN PANEL IZQUIERDO -->
+
+
+    <!-- ─────────────────────────────────────────────────────────────
+         PANEL PRINCIPAL: Template — Área de visualización de vuelos.
+         Contiene la barra de filtros y el grid de tarjetas.
+         ───────────────────────────────────────────────────────────── -->
+    <main class="template-panel template-panel--main">
+
+      <!-- ·····················································
+           FILTROS: Organism — Barra de navegación por estado.
+           Los botones tienen el atributo data-filter para que
+           JavaScript pueda identificar qué filtro aplicar.
+           ····················································· -->
+      <div class="organism-filter-nav">
+
+        <span class="organism-filter-nav__label">// FILTRAR POR ESTADO:</span>
+
+        <!-- Grupo de botones de filtrado -->
+        <div class="molecule-filter-group" id="grupo-filtros">
+          <button class="atom-btn atom-btn--filter atom-btn--filter-active" data-filter="todos">TODOS</button>
+          <button class="atom-btn atom-btn--filter" data-filter="pendiente">PENDIENTE</button>
+          <button class="atom-btn atom-btn--filter" data-filter="lanzado">LANZADO</button>
+          <button class="atom-btn atom-btn--filter" data-filter="cancelado">CANCELADO</button>
+        </div>
+
+        <!-- Contador de registros visibles tras aplicar el filtro -->
+        <span class="organism-filter-nav__count atom-mono" id="contador-visibles">0 REGISTROS</span>
+
+      </div>
+      <!-- FIN FILTROS -->
+
+
+      <!-- ·····················································
+           GRID DE TARJETAS: Organism — Contenedor principal
+           donde JavaScript inserta dinámicamente las tarjetas
+           de cada lanzamiento registrado en el sistema.
+
+           Cada tarjeta debe tener la siguiente estructura:
+
+           <article class="organism-launch-card organism-launch-card--[estado]"
+                    data-id="[id]" data-tipo="[tipo]" data-estado="[estado]">
+
+             <div class="molecule-card-header">
+               <span class="molecule-card-header__id atom-mono">[ID]</span>
+               <span class="atom-badge atom-badge--[estado]">[ESTADO]</span>
+             </div>
+
+             <div class="molecule-card-body">
+               <div class="molecule-card-body__name">[NOMBRE SERIE]</div>
+               <div class="molecule-card-body__type">[TIPO DE COHETE]</div>
+               <div class="molecule-card-body__objective">[OBJETIVO]</div>
+               <div class="molecule-card-body__date atom-mono">[FECHA Y HORA]</div>
+             </div>
+
+             <div class="molecule-card-footer">
+               <button class="atom-btn atom-btn--secondary atom-btn--sm"
+                       data-action="editar" data-id="[id]">EDITAR</button>
+               <button class="atom-btn atom-btn--danger atom-btn--sm"
+                       data-action="cancelar" data-id="[id]">CANCELAR</button>
+             </div>
+
+           </article>
+           ····················································· -->
+      <div class="organism-card-grid" id="grid-lanzamientos">
+
+        <!-- ESTADO VACÍO: se muestra cuando no hay lanzamientos registrados -->
+        <div class="organism-empty-state" id="estado-vacio">
+          <div class="organism-empty-state__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" width="56" height="56">
+              <line x1="32" y1="8"  x2="32" y2="40" stroke="#1a2d4a" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="22" y1="28" x2="32" y2="8"  stroke="#1a2d4a" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="42" y1="28" x2="32" y2="8"  stroke="#1a2d4a" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="18" y1="52" x2="46" y2="52" stroke="#1a2d4a" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="22" y1="40" x2="18" y2="52" stroke="#1a2d4a" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="42" y1="40" x2="46" y2="52" stroke="#1a2d4a" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="32" cy="57" r="3.5" stroke="#1a2d4a" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+          <p class="organism-empty-state__title">NO HAY LANZAMIENTOS REGISTRADOS</p>
+          <p class="organism-empty-state__subtitle">Completa el formulario para registrar el primer vuelo</p>
+        </div>
+
+      </div>
+      <!-- FIN GRID DE TARJETAS -->
+
+    </main>
+    <!-- FIN PANEL PRINCIPAL -->
+
+  </div>
+  <!-- FIN WORKSPACE -->
+
+
+  <!--
+    El archivo JavaScript se carga al final del <body> para garantizar
+    que todos los elementos HTML ya existen en el documento cuando
+    el script intenta acceder a ellos.
+  -->
+  <script src="js/control-vuelos.js"></script>
+
+</body>
+</html>
