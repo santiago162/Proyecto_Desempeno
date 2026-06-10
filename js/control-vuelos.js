@@ -1,6 +1,6 @@
 // =============================================================================
 //  SPACEX FLIGHT CONTROL CENTER
-//  Proyecto de Desempeno - SENA Formacion Complementaria 3406211
+//  Proyecto de Desempeno - SENA Formacion Complementaria 
 // =============================================================================
 
 
@@ -189,15 +189,7 @@ function crearTarjeta(lanzamiento) {
     article.appendChild(footer);
 
   // Animacion hover (Seccion 4) - se agrega aqui mismo
-    article.addEventListener("mouseover", function() {
-        article.classList.add("is-hovered");
-    });
 
-    article.addEventListener("mouseout", function() {
-    article.classList.remove("is-hovered");
-    });
-
-    return article;
 }
 
 
@@ -206,7 +198,16 @@ function crearTarjeta(lanzamiento) {
 //  Los eventos mouseover y mouseout ya estan dentro de crearTarjeta()
 // -----------------------------------------------------------------------------
 
+article.addEventListener("mouseover", function() {
+        article.classList.add("is-hovered");
+    });
 
+    article.addEventListener("mouseout", function() {
+    article.classList.remove("is-hovered");
+    });
+
+    return article;
+    
 // -----------------------------------------------------------------------------
 //  SECCION 5 - FORMULARIO: REGISTRO Y EDICION
 //  Lee los campos, valida que no esten vacios y guarda el lanzamiento
