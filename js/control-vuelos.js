@@ -189,16 +189,7 @@ function crearTarjeta(lanzamiento) {
     article.appendChild(footer);
 
   // Animacion hover (Seccion 4) - se agrega aqui mismo
-
-}
-
-
-// -----------------------------------------------------------------------------
-//  SECCION 4 - ANIMACIONES HOVER
-//  Los eventos mouseover y mouseout ya estan dentro de crearTarjeta()
-// -----------------------------------------------------------------------------
-
-article.addEventListener("mouseover", function() {
+    article.addEventListener("mouseover", function() {
         article.classList.add("is-hovered");
     });
 
@@ -207,7 +198,15 @@ article.addEventListener("mouseover", function() {
     });
 
     return article;
-    
+}
+
+
+// -----------------------------------------------------------------------------
+//  SECCION 4 - ANIMACIONES HOVER
+//  Los eventos mouseover y mouseout ya estan dentro de crearTarjeta()
+// -----------------------------------------------------------------------------
+
+
 // -----------------------------------------------------------------------------
 //  SECCION 5 - FORMULARIO: REGISTRO Y EDICION
 //  Lee los campos, valida que no esten vacios y guarda el lanzamiento
